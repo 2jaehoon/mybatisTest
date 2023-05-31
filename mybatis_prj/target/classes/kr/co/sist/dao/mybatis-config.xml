@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<properties resource="properties/database.properties"/>
+	<typeAliases>
+	<typeAlias type="kr.co.sist.domain.EmpDomain" alias="ed"/>
+	<typeAlias type="kr.co.sist.domain.CarDomain" alias="cd"/>
+	<typeAlias type="kr.co.sist.vo.CarSearchVO" alias="csVO"/>
+	<typeAlias type="kr.co.sist.vo.EmpInsertVO" alias="eiVO"/>
+	</typeAliases>
+  <environments default="development">
+    <environment id="development">
+      <transactionManager type="JDBC"/>
+      <dataSource type="POOLED">
+        <property name="driver" value="${driver}"/>
+        <property name="url" value="${url}"/>
+        <property name="username" value="${username}"/>
+        <property name="password" value="${password}"/>
+      </dataSource>
+    </environment>
+  </environments>
+  <mappers>
+    <mapper resource="kr/co/sist/dao/day0516/test_mapper2.xml"/>
+    <mapper resource="kr/co/sist/dao/day0517/test_mapper3.xml"/>
+    <mapper resource="kr/co/sist/dao/day0517/select_mapper1.xml"/>
+    <mapper resource="kr/co/sist/dao/day0518/select_mapper2.xml"/>
+    <mapper resource="kr/co/sist/dao/day0519/select_mapper3.xml"/>
+    <mapper resource="kr/co/sist/dao/day0522/select_mapper4.xml"/>
+    <mapper resource="kr/co/sist/dao/day0523/select_mapper5.xml"/>
+  </mappers>
+</configuration>

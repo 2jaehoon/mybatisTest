@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.sist.selectMapper5">
+
+
+<!-- Procedure 사용
+insert -->
+<select id="insertProc" parameterType="eiVO" statementType="CALLABLE">
+{ call insert_cp_emp(
+	#{  empno, mode=IN, jdbcType=NUMERIC },
+	#{  ename, mode=IN, jdbcType=VARCHAR },
+	#{  job, mode=IN, jdbcType=VARCHAR },
+	#{  sal, mode=IN, jdbcType=NUMERIC },
+	#{  deptno, mode=IN, jdbcType=NUMERIC },
+	#{  row_cnt, mode=OUT, jdbcType=NUMERIC },
+	#{  msg, mode=OUT, jdbcType=VARCHAR }
+) 
+}
+
+</select>
+
+<resultMap type="hashmap" id="map"/>
+<!-- Procedure 사용
+select 모든 레코드 조회 -->
+<select id="selectAllCpEmp" statementType="CALLABLE">
+{
+call select_all_cp_emp( #{ all_cp_emp, mode=OUT, jdbcType=CURSOR, javaType=java.sql.ResultSet, resultMap=map } )
+}
+</select>
+
+<!-- Procedure 사용
+select : 특정 레코드 조회 -->
+<select id="selectDeptCpEmp" statementType="CALLABLE">
+{
+call select_cp_emp_deptno( #{ deptno, mode=IN, jdbcType=NUMERIC }  ,#{ dept_cp_emp, mode=OUT, jdbcType=CURSOR, javaType=java.sql.ResultSet, resultMap=map } )
+}
+</select>
+ 
+
+</mapper>

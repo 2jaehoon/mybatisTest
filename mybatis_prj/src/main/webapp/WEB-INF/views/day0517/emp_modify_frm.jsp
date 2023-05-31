@@ -1,0 +1,63 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<!-- bootstrap 시작-->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+<!-- bootstrap 끝-->
+<!-- jQuery CDN 시작 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+ <!-- jQuery CDN 끝 -->
+ <script type="text/javascript">
+ $(function(){
+ 
+ });
+ </script>
+</head>
+<body>
+<form action="../emp_modify_process.do" method="post">
+<table>
+<tr>
+<td><label>사원번호</label></td>
+<td><input type="text" name="empno" class="inputBox" value="${ empData.empno  }" readonly="readonly"/></td>
+</tr>
+<tr>
+<td><label>사원명</label></td>
+<td><input type="text" name="ename" class="inputBox"  value="${ empData.ename  }"/></td>
+</tr>
+<tr>
+<td><label>직무</label></td>
+<td><input type="text" name="job" class="inputBox" value="${ empData.job  }"/></td>
+</tr>
+<tr>
+<td><label>매니저번호</label></td>
+<td><input type="text" name="mgr" class="inputBox" value="${ empData.mgr  }"/></td>
+</tr>
+<tr>
+<td><label>연봉</label></td>
+<td><input type="text" name="sal" class="inputBox" value="${ empData.sal  }"/></td>
+</tr>
+<tr>
+<td><label>보너스</label></td>
+<td><input type="text" name="comm" class="inputBox" value="${ empData.comm  }"/><br/></td>
+</tr>
+<tr>
+<td><label>부서</label></td>
+<td>
+<input type="text" name="deptno" class="inputBox" value="${ empData.deptno  }" readonly="readonly"/>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<input type="submit" value="수정" class="btn" /></td>
+</tr>
+</table>
+
+</form>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.sist.selectMapper3">
+
+<!-- resultMap : 조회 컬럼과 setter method를 미리 연결할 때 사용
+사용할 select에서는 resultMap 속성을 사용한다.
+
+ -->
+ <resultMap type="cd" id="carResult">
+ 	<result column="model" property="model" />
+ 	<result column="car_year" property="car_year" />
+ 	<result column="price" property="price" />
+ 	<result column="cc" property="cc" />
+ 	<result column="car_option" property="car_option" />
+ 	<result column="car_img" property="car_img" />
+ 	<result column="hiredate" property="hiredate" />
+
+ </resultMap>
+
+<!-- subquery 
+검색결과 가지고 insert, update, delete, select를 수행할 때
+car_,model 테이블에서 가장 마지막에 입력된 차량부터 10건의 레코드를 조회
+검색 컬럼은 모델명, 연식, 가격, 배기량, 옵션, 이미지, 입력일 입니다.
+-->
+<select id="subquery" resultMap="carResult">
+select model, car_year, price, cc, car_option, car_img,hiredate
+from
+(select model, car_year, price, cc, car_option, car_img,
+	to_char(hiredate, 'yyyy-mm-dd day q"분기"') hiredate,
+	row_number() over(order by hiredate desc) rnum
+from car_model)
+where rnum between 1 and 10
+</select>
+<!-- union -->
+<!-- join -->
+<!-- join + subquery -->
+<!-- 테이블명이 동적일 때 -->
+<!-- dynamic query : where
+where를 동적으로 붙여야 할 때
+부서번호를 입력받아 부서번호가 -1이라면( 부서번호가 입력되지 않은 상황 )
+모든 사원 정보를 조회하고, 그렇지 않다면 해당 부서의 사원만 조회하자.
+ -->
+ <select id="where" resultType="ed" parameterType="int">
+ select empno, mgr, sal, comm, deptno, ename, job, hiredate
+ from emp
+ <where>
+ <if test="deptno != -1">
+ deptno=#{ deptno }
+ </if>
+ </where>
+ 
+ </select>
+<!-- dynamic query : if 
+	if의 조건에는 아래의 연산자를 사용할 수 있다.
+	논리연산자와 (&& - and 나 || - or ), 
+	관계 연산자( > - gt , < lt, == eq, != neq, >= gte, <= lte ) 
+	
+	car_model 테이블에서 옵션이 입력되는 옵션을 가지고 있는 차량을 검색하고,
+	차량 이미지가 입력되면 입력되는 이미지를 가지고 있는 차량을 검색
+	옵션과 이미지가 동시에 입력되면 둘다 가지고 있는 차량을 검색
+	검색 컬럼은 모델명, 연식, 가격, 배기량, 옵션, 이미지, 입력일
+-->
+<select id="dynamicIf" resultMap="carResult" parameterType="csVO">
+select model, car_year, price, cc, car_option, car_img,
+	to_char(hiredate, 'yyyy-mm-dd day q"분기"') hiredate,
+	row_number() over(order by hiredate desc) rnum
+from car_model
+<where>
+<if test="car_option != null and car_option != ''">
+ car_option like '%'||#{ car_option }||'%'
+</if>
+<if test="car_img != null and car_img != ''">
+or car_img like '%'||#{ car_img }||'%'
+</if>
+</where>
+</select>
+<!-- dynamic query : choose 연관된 여러 조건을 비교할 때
+	입력 값이 1이면 직무가 SALESMAN을 검색하고 
+	2이면 MANAGER를 검색하고 3이면 ANALYST를 검색한다 그렇지 않으면 모든 직무를 검색
+ -->
+ <select id="dynamicChoose" resultType="ed" parameterType="int">
+ select empno, ename, job, mgr, hiredate
+ from emp
+ where
+ <choose>
+ <when test="jobType eq 1">
+ job='SALESMAN'
+ </when>
+  <when test="jobType eq 2">
+ job='MANAGER'
+ </when>
+  <when test="jobType eq 3">
+ job='ANALYST'
+ </when>
+ <otherwise>
+1=1
+ </otherwise>
+ 
+ </choose>
+ </select>
+<!-- dynamic query : forEach
+		Map을 받아  map객체의 키를 사용하여 List를 꺼내고 반복시킬때 사용
+		사원 테이블에서 입력된 직무에 해당하는 모든 사원을 조회
+		사원 정보는 [SALESMAN, MANAGER, ANALYST, PRESIDENT, CLERK]가 입력된다.
+		
+		위의 값을 사용하여 where 컬럼명 in(SALESMAN, MANAGER, ANALYST, PRESIDENT, CLERK)
+		의 쿼리를 생성
+ -->
+ <select id="dynamicForeach" resultType="ed" parameterType="java.util.HashMap">
+  select empno, mgr, sal, comm, deptno, ename, job, hiredate
+ from emp
+ where job in
+ <foreach collection="selectJob" item="job" open="(" close=")" index="i" separator=",">#{ job }
+ 
+ </foreach>
+ </select>
+	
+<!--  -->
+<!--  -->
+<!--  -->
+
+</mapper>

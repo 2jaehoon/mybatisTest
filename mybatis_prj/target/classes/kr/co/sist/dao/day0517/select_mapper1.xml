@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.sist.selectMapper1">
+<!-- 컬럼 하나 행 하나 조회
+부서번호를 입력받아 부서명을 조회하는 일
+	ss.selectOne("아이디", 값);
+	String dname = ss.selectOne("scsr",10);
+ -->
+ <select id="scsr" resultType="String" parameterType="Integer">
+ select dname
+ from dept
+ where deptno=#{ deptno }
+ </select>
+ 
+<!-- 컬럼 하나 여러 행 조회
+`	List<> list = ss.selectList("아이디", 값);
+	사원테이블에서 모든 사원명 검색(argument를 생략하시면 됩니다 ^^)
+ -->
+
+ <select id="scmr" resultType="String">
+  select ename
+ from emp
+ </select>
+
+
+
+<!-- 컬럼 여러 개 행 하나 조회 -->
+<!-- 컬럼 여러 개 여러 행 조회 -->
+<!-- like 사용 -->
+<!-- subquery -->
+<!-- union -->
+<!-- join -->
+<!-- join + subquery -->
+<!-- 테이블명이 동적일 때 -->
+<!-- dynamic query : if -->
+<!-- dynamic query : choose -->
+<!-- dynamic query : forEach -->
+<!--  -->
+<!--  -->
+<!--  -->
+
+</mapper>
